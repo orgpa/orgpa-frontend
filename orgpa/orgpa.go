@@ -2,6 +2,7 @@ package orgpa
 
 import (
 	"html/template"
+	"log"
 	"net/http"
 	"orgpa-frontend/configuration"
 	"time"
@@ -25,5 +26,6 @@ func Run(config configuration.ServiceConfig, template *template.Template) error 
 		MaxHeaderBytes: 1 << 20,
 	}
 
+	log.Println("Server is running -", handler.Config)
 	return srv.ListenAndServe()
 }

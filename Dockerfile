@@ -6,6 +6,6 @@ COPY . /Orgpa/src/orgpa-frontend
 
 WORKDIR /Orgpa/src/orgpa-frontend
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD [ "go", "run", "main.go" ]

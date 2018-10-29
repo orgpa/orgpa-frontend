@@ -38,7 +38,7 @@ func (sh *ServerHandler) serveStatic(w http.ResponseWriter, r *http.Request) {
 		} else {
 			contentType = "text/plain"
 		}
-		w.Header().Add("Content Type", contentType)
+		w.Header().Add("Content-Type", contentType)
 		w.Write(data)
 	} else {
 		w.WriteHeader(404)
