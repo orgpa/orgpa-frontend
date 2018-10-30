@@ -6,15 +6,14 @@
 	<title>Document</title>
 
 	<script src="/static/js/request.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 <body>
 	<script>
-		var databaseAPI = new DatabaseAPI
+		var databaseAPI = new DatabaseAPI('{{.Config.URLDatabaseAPI}}')
 	</script>
 
 	<h1>My notes</h1>
-	<button onclick="databaseAPI.Request()">Click me</button>
-
-	<img src="/static/img/logo-nci.jpg" alt="test image">
+	<button id="button-request-api" onclick="databaseAPI.RequestList()">request api</button>
 </body>
 </html>

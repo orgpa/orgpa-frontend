@@ -25,7 +25,13 @@ func newServerHandler(config configuration.ServiceConfig, template *template.Tem
 
 // Define all the ServerHandler route to the given Router.
 func (sh *ServerHandler) defineRoutes(router *mux.Router) {
+	// Main route
 	router.Methods("GET").Path("/").HandlerFunc(sh.homePage)
 
+	// Static file route
 	router.Methods("GET").PathPrefix("/static/").HandlerFunc(sh.serveStatic)
+
+	// API route
+	apiRouter := router.PathPrefix("/api").Subrouter()
+	apiRouter.Methods("GET").Path("/notes").HandlerFunc(sh.apiGetAllNotes)
 }

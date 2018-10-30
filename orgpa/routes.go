@@ -7,7 +7,7 @@ import (
 )
 
 func (sh *ServerHandler) homePage(w http.ResponseWriter, r *http.Request) {
-	sh.Template.ExecuteTemplate(w, "HomePage.html", "")
+	sh.Template.ExecuteTemplate(w, "HomePage.html", sh)
 }
 
 // Serve static filese
