@@ -1,13 +1,19 @@
 package orgpa
 
 import (
+	"html/template"
 	"io/ioutil"
 	"net/http"
 	"strings"
 )
 
 func (sh *ServerHandler) homePage(w http.ResponseWriter, r *http.Request) {
-	sh.Template.ExecuteTemplate(w, "HomePage.html", sh)
+
+	// Usage of template for the tests.
+	t, _ := template.ParseFiles("./frontend/views/HomePage.html")
+	t.Execute(w, sh)
+
+	// sh.Template.Execute(w, "HomePage.html", sh)
 }
 
 // Serve static filese

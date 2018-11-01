@@ -1,3 +1,21 @@
 body {
 	font-family: Arial, Helvetica, sans-serif;
 }
+
+th, td {
+	text-align: center !important;
+}
+
+.section-title {
+	font: 600 2em/1 'Raleway', sans-serif;
+	color: rgba(0,0,0,.8);
+	text-align: center;
+	text-transform: uppercase;
+	letter-spacing: .2em;
+	top: 25%;
+	width: 100%;
+}
+
+.nav-wrapper {
+	background-color: rgb(135, 192, 50) !important;
+}

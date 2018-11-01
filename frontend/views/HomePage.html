@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<link rel="stylesheet" href="/static/css/main.css">
 	<title>Document</title>
+
+	<!-- CSS -->
+	<link rel="stylesheet" href="/static/css/main.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
 	<!-- Scripts -->
 	<script src="/static/js/request.js"></script>
 	<script src="/static/js/rendering/notes.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </head>
 <body>
 	<script>
@@ -16,8 +20,35 @@
 		var notesRenderer = new NotesRendering
 	</script>
 
-	<h1>My notes</h1>
-	<div id="AllNotesTable"></div>
+	<nav class="nav-wrapper">
+		<div class="container">
+			<a href="/" class="brand-logo">orgpa</a>
+			<ul id="nav-mobile" class="right hide-on-med-and-down">
+				<li><a href="#">titi</a></li>
+				<li><a href="#">tata</a></li>
+				<li><a href="#">toto</a></li>
+			</ul>
+		</div>
+	</nav>
+
+	<div class="container">
+		<div class="card z-depth-3" style="margin-top: 40px;">
+			<div class="card-content">
+				<h1 class="section-title" style="margin:0px;">notes</h1>
+			</div>
+		</div>
+		<div class="card">
+			<table class="striped">
+				<thead>
+					<th><h5 style="margin:0px;">Title</h5></th>
+					<th><h5 style="margin:0px;">Content</h5></th>
+				</thead>
+				<tbody id="AllNotesTableBody">
+
+				</tbody>
+			</table>
+		</div>
+	</div>
 	<script>
 		databaseAPI.RequestAllNotes(notesRenderer.AllNotesHomePage);
 	</script>
