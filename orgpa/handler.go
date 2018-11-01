@@ -28,6 +28,10 @@ func (sh *ServerHandler) defineRoutes(router *mux.Router) {
 	// Main route
 	router.Methods("GET").Path("/").HandlerFunc(sh.homePage)
 
+	// Notes route
+	notesRouter := router.PathPrefix("/note").Subrouter()
+	notesRouter.Methods("GET").Path("/{id}").HandlerFunc(sh.notePage)
+
 	// Static file route
 	router.Methods("GET").PathPrefix("/static/").HandlerFunc(sh.serveStatic)
 

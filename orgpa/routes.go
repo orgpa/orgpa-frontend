@@ -1,54 +1,49 @@
 package orgpa
 
 import (
+	"encoding/json"
 	"html/template"
-	"io/ioutil"
+	"log"
 	"net/http"
-	"strings"
+	"orgpa-frontend/database"
+
+	"github.com/gorilla/mux"
 )
 
 func (sh *ServerHandler) homePage(w http.ResponseWriter, r *http.Request) {
-
-	// Usage of template for the tests.
+	pi := newPageInfo("orgpa - home", "", sh.Config)
 	t, _ := template.ParseFiles("./frontend/views/HomePage.html")
-	t.Execute(w, sh)
-
-	// sh.Template.Execute(w, "HomePage.html", sh)
+	t.Execute(w, pi)
 }
 
-// Serve static filese
-func (sh *ServerHandler) serveStatic(w http.ResponseWriter, r *http.Request) {
+func (sh *ServerHandler) notePage(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
 
-	path := r.URL.Path[len("/static/"):]
-
-	if strings.HasSuffix(sh.Config.StaticFilePath, "/") == false {
-		sh.Config.StaticFilePath += "/"
+	// Get ID from arguments
+	varID, ok := vars["id"]
+	if !ok {
+		http.Redirect(w, r, "/", 400)
+		return
 	}
-	path = sh.Config.StaticFilePath + path
-	data, err := ioutil.ReadFile(string(path))
 
-	if err == nil {
-		var contentType string
-		if strings.HasSuffix(path, ".css") {
-			contentType = "text/css"
-		} else if strings.HasSuffix(path, ".html") {
-			contentType = "text/html"
-		} else if strings.HasSuffix(path, ".js") {
-			contentType = "application/javascript"
-		} else if strings.HasSuffix(path, ".png") {
-			contentType = "image/png"
-		} else if strings.HasSuffix(path, ".svg") {
-			contentType = "image/svg+xml"
-		} else if strings.HasSuffix(path, ".jpg") {
-			contentType = "image/jpg"
-		} else {
-			contentType = "text/plain"
-		}
-		w.Header().Add("Content-Type", contentType)
-		w.Write(data)
-	} else {
-		w.WriteHeader(404)
-		w.Header().Set("Content-Type", "application/json;charset=utf8")
-		w.Write([]byte("{error:" + err.Error() + "}"))
+	// Request database API
+	resp, err := http.Get(sh.Config.URLDatabaseAPI + "/list/" + varID)
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/", 400)
+		return
 	}
+
+	// Decode JSON from response's body
+	var note database.Notes
+	err = json.NewDecoder(resp.Body).Decode(&note)
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/", 400)
+		return
+	}
+
+	pi := newPageInfo("orgpa - note", note, sh.Config)
+	t, _ := template.ParseFiles("./frontend/views/NotePage.html")
+	t.Execute(w, pi)
 }

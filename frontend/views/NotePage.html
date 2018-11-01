@@ -34,23 +34,10 @@
 	<div class="container">
 		<div class="card z-depth-3" style="margin-top: 40px;">
 			<div class="card-content">
-				<h1 class="section-title" style="margin:0px;">notes</h1>
+				<h1 class="section-title" style="margin:0px;">{{.Data.Title}}</h1>
 			</div>
 		</div>
-		<div class="card">
-			<table class="striped">
-				<thead>
-					<th><h5 style="margin:0px;">Title</h5></th>
-					<th><h5 style="margin:0px;">Content</h5></th>
-				</thead>
-				<tbody id="AllNotesTableBody">
-
-				</tbody>
-			</table>
-		</div>
+		{{.Data}}
 	</div>
-	<script>
-		databaseAPI.RequestAllNotes(notesRenderer.AllNotesHomePage);
-	</script>
 </body>
 </html>
