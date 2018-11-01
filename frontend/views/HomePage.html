@@ -10,6 +10,7 @@
 
 	<!-- Scripts -->
 	<script src="/static/js/request.js"></script>
+	<script src="/static/js/form.js"></script>
 	<script src="/static/js/rendering/notes.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -38,15 +39,37 @@
 			</div>
 		</div>
 		<div class="card">
-			<table class="striped">
-				<thead>
-					<th><h5 style="margin:0px;">Title</h5></th>
-					<th><h5 style="margin:0px;">Content</h5></th>
-				</thead>
-				<tbody id="AllNotesTableBody">
+			<div class="card-content">
+				<table class="striped">
+					<thead>
+						<th><h5 style="margin:0px;">Title</h5></th>
+						<th><h5 style="margin:0px;">Content</h5></th>
+					</thead>
+					<tbody id="AllNotesTableBody">
 
-				</tbody>
-			</table>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="card z-depth-3" style="margin-top: 60px;">
+			<div class="card-content">
+				<h1 class="section-title" style="margin:0px;">new note</h1>
+			</div>
+		</div>
+		<div class="card">
+			<div class="card-content">
+				<form action="/api/note" method="POST">
+					<div class="row">
+						<div class="col l3 m6 s12">
+							<input id="new-note-title" name="title" type="text" placeholder="Title">
+						</div>
+						<div class="col l9 m6 s12">
+							<textarea id="new-note-content" name="content" class="materialize-textarea" placeholder="Content"></textarea>
+						</div>
+					</div>
+					<button id="btn-valid-new-note" class="btn red" onclick="CheckNewNoteForm()">add</button>
+				</form>
+			</div>
 		</div>
 	</div>
 	<script>

@@ -3,6 +3,7 @@ package orgpa
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 )
 
@@ -24,4 +25,17 @@ func (sh *ServerHandler) apiGetAllNotes(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	fmt.Fprint(w, string(responseBody))
+}
+
+func (sh *ServerHandler) apiNewNote(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json;charset=utf8")
+
+	title := r.FormValue("title")
+	content := r.FormValue("content")
+	if title == "" || content == "" {
+		// To handle
+		log.Println("error")
+		return
+	}
+	// Do post request
 }

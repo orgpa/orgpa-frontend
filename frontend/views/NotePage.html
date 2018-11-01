@@ -10,6 +10,7 @@
 
 	<!-- Scripts -->
 	<script src="/static/js/request.js"></script>
+	<script src="/static/js/form.js"></script>
 	<script src="/static/js/rendering/notes.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
@@ -37,7 +38,14 @@
 				<h1 class="section-title" style="margin:0px;">{{.Data.Title}}</h1>
 			</div>
 		</div>
-		{{.Data}}
+		<div class="card z-depth-3">
+			<div class="card-content">
+				<div class="input-field">
+					<textarea cols="30" rows="10" class="materialize-textarea" onkeyup="ShowValidateButton('{{.Data.Content}}', this.value, 'btn-valid-content')">{{.Data.Content}}</textarea>
+				</div>
+				<button id="btn-valid-content" class="btn red" style="display:none;">modify</button>
+			</div>
+		</div>
 	</div>
 </body>
 </html>
