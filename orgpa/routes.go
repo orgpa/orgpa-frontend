@@ -43,7 +43,16 @@ func (sh *ServerHandler) notePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pi := newPageInfo("orgpa - note", note, sh.Config)
+	// Create a renderable Note structure from the previous
+	// requested note struct.
+	var noteString = database.NotesString{
+		ID:       note.ID.Hex(),
+		Content:  note.Content,
+		Title:    note.Title,
+		LastEdit: note.LastEdit,
+	}
+
+	pi := newPageInfo("orgpa - note", noteString, sh.Config)
 	t, _ := template.ParseFiles("./frontend/views/NotePage.html")
 	t.Execute(w, pi)
 }

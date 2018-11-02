@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
 	<!-- Scripts -->
-	<script src="/static/js/request.js"></script>
+	<script src="/static/js/database.js"></script>
 	<script src="/static/js/form.js"></script>
 	<script src="/static/js/rendering/notes.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -44,6 +44,7 @@
 					<textarea cols="30" rows="10" class="materialize-textarea" onkeyup="ShowValidateButton('{{.Data.Content}}', this.value, 'btn-valid-content')">{{.Data.Content}}</textarea>
 				</div>
 				<button id="btn-valid-content" class="btn red" style="display:none;">modify</button>
+				<button id="btn-delete-note" class="btn red" onclick="databaseAPI.DeleteNote('{{.Data.ID}}', '/')">delete</button>
 			</div>
 		</div>
 	</div>
