@@ -75,7 +75,7 @@ func (sh *ServerHandler) apiDeleteNote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	client := &http.Client{}
-	req, err := http.NewRequest("DELETE", sh.Config.URLDatabaseAPI+"/"+id, nil)
+	req, err := http.NewRequest("DELETE", sh.Config.URLDatabaseAPI+"/list/"+id, nil)
 	if err != nil {
 		w.WriteHeader(500)
 		fmt.Fprintf(w, "{\"error\": \"%s\"}", err.Error())

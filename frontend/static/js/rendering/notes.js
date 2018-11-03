@@ -1,6 +1,14 @@
 class NotesRendering {
 
 	AllNotesHomePage(allNotes) {
+
+		// Display the AllNotes div if there is any notes to display
+		if (allNotes.length == 0) {
+			document.getElementById("AllNotes").style.display = "none";
+			return;
+		} else {
+			document.getElementById("AllNotes").style.display = "block";
+		}
 		var table = document.getElementById("AllNotesTableBody");
 		var html = "";
 
