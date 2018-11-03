@@ -66,9 +66,11 @@ func (sh *ServerHandler) apiNewNote(w http.ResponseWriter, r *http.Request) {
 }
 
 func (sh *ServerHandler) apiDeleteNote(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain;charset=utf8")
 	vars := mux.Vars(r)
 	id, ok := vars["id"]
 	if !ok {
+		w.Header().Set("Content-Type", "application/json;charset=utf8")
 		w.WriteHeader(400)
 		fmt.Fprintf(w, "{\"error\": \"missing information\"}")
 		return
@@ -77,6 +79,7 @@ func (sh *ServerHandler) apiDeleteNote(w http.ResponseWriter, r *http.Request) {
 	client := &http.Client{}
 	req, err := http.NewRequest("DELETE", sh.Config.URLDatabaseAPI+"/list/"+id, nil)
 	if err != nil {
+		w.Header().Set("Content-Type", "application/json;charset=utf8")
 		w.WriteHeader(500)
 		fmt.Fprintf(w, "{\"error\": \"%s\"}", err.Error())
 		return
@@ -84,6 +87,45 @@ func (sh *ServerHandler) apiDeleteNote(w http.ResponseWriter, r *http.Request) {
 
 	_, err = client.Do(req)
 	if err != nil {
+		w.Header().Set("Content-Type", "application/json;charset=utf8")
+		w.WriteHeader(400)
+		fmt.Fprintf(w, "{\"error\": \"%s\"}", err.Error())
+		return
+	}
+}
+
+func (sh *ServerHandler) apiPatchNote(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain;charset=utf8")
+	id := r.FormValue("id")
+	content := r.FormValue("content")
+	if id == "" || content == "" {
+		w.Header().Set("Content-Type", "application/json;charset=utf8")
+		w.WriteHeader(400)
+		fmt.Fprintf(w, "{\"error\": \"missing information\"}")
+		return
+	}
+
+	note := database.Notes{Content: content}
+	jsonData, err := json.Marshal(note)
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json;charset=utf8")
+		w.WriteHeader(400)
+		fmt.Fprintf(w, "{\"error\": \"'%s\"}", err.Error())
+		return
+	}
+
+	client := &http.Client{}
+	req, err := http.NewRequest("PATCH", sh.Config.URLDatabaseAPI+"/list/"+id, bytes.NewBuffer(jsonData))
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json;charset=utf8")
+		w.WriteHeader(500)
+		fmt.Fprintf(w, "{\"error\": \"%s\"}", err.Error())
+		return
+	}
+
+	_, err = client.Do(req)
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json;charset=utf8")
 		w.WriteHeader(400)
 		fmt.Fprintf(w, "{\"error\": \"%s\"}", err.Error())
 		return

@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"html/template"
 	"os"
+	"strings"
 )
 
 const (
@@ -34,6 +35,10 @@ func ExtractConfiguration(filename string) (ServiceConfig, error) {
 		URLDatabaseAPIDefault,
 		StaticFilePathDefault,
 		ViewFilePathDefault,
+	}
+
+	if strings.HasSuffix(config.StaticFilePath, "/") == false {
+		config.StaticFilePath += "/"
 	}
 
 	file, err := os.Open(filename)

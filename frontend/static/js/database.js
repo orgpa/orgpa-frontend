@@ -29,7 +29,7 @@ class DatabaseAPI {
 		var content = contentInput.value
 		if (title == "" || content == "") {
 			console.warn("Invalid form.")
-			return false;
+			return false
 		}
 
 		$.ajax({
@@ -52,13 +52,33 @@ class DatabaseAPI {
 	}
 
 	DeleteNote(idNote, redirectURL) {
-		console.log("ID", idNote)
 		$.ajax({
 			method: "DELETE",
 			url: "/api/notes/"+idNote,
 			success: function(data) {
 				console.log(data)
 				window.location = redirectURL
+			},
+			error: function(data) {
+				console.error("Could not request API")
+				console.error(data)
+			}
+		})
+	}
+
+	ModifyNote(idNote, idModifiedContent) {
+		var content = document.getElementById(idModifiedContent)
+		if (!content)
+			return false
+		$.ajax({
+			method: "PATCH",
+			url: "/api/notes",
+			data: {
+				"id": idNote,
+				"content": content.value
+			},
+			success: function(data) {
+				window.location = "/note/" + idNote
 			},
 			error: function(data) {
 				console.error("Could not request API")

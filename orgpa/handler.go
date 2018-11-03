@@ -39,5 +39,6 @@ func (sh *ServerHandler) defineRoutes(router *mux.Router) {
 	apiRouter := router.PathPrefix("/api").Subrouter()
 	apiRouter.Methods("GET").Path("/notes").HandlerFunc(sh.apiGetAllNotes)
 	apiRouter.Methods("POST").Path("/notes").HandlerFunc(sh.apiNewNote)
+	apiRouter.Methods("PATCH").Path("/notes").HandlerFunc(sh.apiPatchNote)
 	apiRouter.Methods("DELETE").Path("/notes/{id}").HandlerFunc(sh.apiDeleteNote)
 }

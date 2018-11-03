@@ -4,6 +4,9 @@
 	<meta charset="UTF-8">
 	<title>{{.Title}}</title>
 
+	<!-- Favicon -->
+	<link rel="icon" href="/static/img/logo-nci.jpg">
+
 	<!-- CSS -->
 	<link rel="stylesheet" href="/static/css/main.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
@@ -41,10 +44,12 @@
 		<div class="card z-depth-3">
 			<div class="card-content">
 				<div class="input-field">
-					<textarea cols="30" rows="10" class="materialize-textarea" onkeyup="ShowValidateButton('{{.Data.Content}}', this.value, 'btn-valid-content')">{{.Data.Content}}</textarea>
+					<textarea id="modified-note-content" class="materialize-textarea" onkeyup="ShowValidateButton('{{.Data.Content}}', this.value, 'btn-valid-content')">{{.Data.Content}}</textarea>
 				</div>
-				<button id="btn-valid-content" class="btn red" style="display:none;">modify</button>
-				<button id="btn-delete-note" class="btn red" onclick="databaseAPI.DeleteNote('{{.Data.ID}}', '/')">delete</button>
+				<div class="row">
+					<button id="btn-valid-content" class="btn red" style="display:none;margin-bottom: 10px;" onclick="databaseAPI.ModifyNote('{{.Data.ID}}', 'modified-note-content')">modify</button>
+					<button id="btn-delete-note" class="btn red" onclick="databaseAPI.DeleteNote('{{.Data.ID}}', '/')">delete</button>
+				</div>
 			</div>
 		</div>
 	</div>

@@ -11,9 +11,6 @@ func (sh *ServerHandler) serveStatic(w http.ResponseWriter, r *http.Request) {
 
 	path := r.URL.Path[len("/static/"):]
 
-	if strings.HasSuffix(sh.Config.StaticFilePath, "/") == false {
-		sh.Config.StaticFilePath += "/"
-	}
 	path = sh.Config.StaticFilePath + path
 	data, err := ioutil.ReadFile(string(path))
 
@@ -39,6 +36,6 @@ func (sh *ServerHandler) serveStatic(w http.ResponseWriter, r *http.Request) {
 	} else {
 		w.WriteHeader(404)
 		w.Header().Set("Content-Type", "application/json;charset=utf8")
-		w.Write([]byte("{error:" + err.Error() + "}"))
+		w.Write([]byte("{\"error\": \"" + err.Error() + "\"}"))
 	}
 }
