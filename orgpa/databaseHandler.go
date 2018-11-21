@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"orgpa-frontend/database"
+	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -43,7 +44,7 @@ func (sh *ServerHandler) apiNewNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	note := database.Notes{Title: title, Content: content}
+	note := database.Notes{ID: 0, Title: title, Content: content, LastEdit: time.Now().UTC()}
 	jsonData, err := json.Marshal(note)
 	if err != nil {
 		w.WriteHeader(400)

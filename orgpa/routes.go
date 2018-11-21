@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"orgpa-frontend/database"
+	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -46,7 +47,7 @@ func (sh *ServerHandler) notePage(w http.ResponseWriter, r *http.Request) {
 	// Create a renderable Note structure from the previous
 	// requested note struct.
 	var noteString = database.NotesString{
-		ID:       note.ID.Hex(),
+		ID:       strconv.Itoa(note.ID),
 		Content:  note.Content,
 		Title:    note.Title,
 		LastEdit: note.LastEdit,
