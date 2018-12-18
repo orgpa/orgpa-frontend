@@ -1,4 +1,0 @@
-{
-	"endpoint": "0.0.0.0:8080",
-	"urlDatabaseAPI": "http://172.17.0.1:8000"
-}

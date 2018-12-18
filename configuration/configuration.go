@@ -1,59 +1,39 @@
-// TODO:
-// Load the configuration from the environement.
-// Set the default value and then look for the Env variable.
-// Remove the configuration.json file.
-// The Env variables will be set in the dockerfile.yml.
-
 package configuration
 
 import (
-	"encoding/json"
 	"html/template"
-	"os"
 	"strings"
-)
 
-const (
-	EndpointDefault       = "127.0.0.1:80"
-	URLDatabaseAPIDefault = "127.0.0.1:9900"
-	StaticFilePathDefault = "./frontend/static"
-	ViewFilePathDefault   = "./frontend/views/*.html"
+	"github.com/kelseyhightower/envconfig"
 )
 
 // ServiceConfig contains all the configuration of the service
 type ServiceConfig struct {
-	Endpoint       string `json:"endpoint"`
-	URLDatabaseAPI string `json:"urlDatabaseAPI"`
-	StaticFilePath string `json:"staticFilePath"`
-	ViewFilePath   string `json:"viewFilePath"`
+	Endpoint       string `required:"true"`
+	URLDatabaseAPI string `required:"true" envconfig:"URL_DATABASE_API"`
+	StaticFilePath string `required:"false" split_words:"true" default:"./frontend/static"`
+	ViewFilePath   string `required:"false" split_words:"true" default:"./frontend/views/*.html"`
 }
 
-// ExtractConfiguration return the configuration found in the given file.
+// ExtractConfiguration will extract the configuration from
+// the environement and return a ServiceConfig struct containing
+// the whole service configuration.
 func ExtractConfiguration(filename string) (ServiceConfig, error) {
-	config := ServiceConfig{
-		EndpointDefault,
-		URLDatabaseAPIDefault,
-		StaticFilePathDefault,
-		ViewFilePathDefault,
+	var config ServiceConfig
+	err := envconfig.Process("orgpa", &config)
+	if err != nil {
+		return ServiceConfig{}, err
 	}
 
 	if strings.HasSuffix(config.StaticFilePath, "/") == false {
 		config.StaticFilePath += "/"
 	}
-
-	file, err := os.Open(filename)
-	if err != nil {
-		return config, err
-	}
-
-	err = json.NewDecoder(file).Decode(&config)
-	if err != nil {
-		return config, err
-	}
 	return config, nil
 }
 
 // InitTemplate initialize the ServiceConfig's template.
+//
+// TODO: remove this function from here
 func (config *ServiceConfig) InitTemplate() *template.Template {
 	return template.Must(template.ParseGlob(config.ViewFilePath))
 }
