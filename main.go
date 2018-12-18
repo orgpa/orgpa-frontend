@@ -7,11 +7,14 @@ import (
 )
 
 func main() {
-	config, _ := configuration.ExtractConfiguration("configuration.json")
+	config, err := configuration.ExtractConfiguration("configuration.json")
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 
 	template := config.InitTemplate()
 
-	err := orgpa.Run(config, template)
+	err = orgpa.Run(config, template)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
