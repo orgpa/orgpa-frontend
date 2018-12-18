@@ -2,7 +2,6 @@ package orgpa
 
 import (
 	"encoding/json"
-	"html/template"
 	"log"
 	"net/http"
 	"orgpa-frontend/database"
@@ -12,9 +11,10 @@ import (
 )
 
 func (sh *ServerHandler) homePage(w http.ResponseWriter, r *http.Request) {
-	pi := newPageInfo("orgpa - home", "", sh.Config)
-	t, _ := template.ParseFiles("./frontend/views/HomePage.html")
-	t.Execute(w, pi)
+	err := sh.TmplEngine.GenerateAndExecuteTemplate(w, "HomePage", "orgpa - home", "")
+	if err != nil {
+		log.Fatal(err.Error())
+	}
 }
 
 func (sh *ServerHandler) notePage(w http.ResponseWriter, r *http.Request) {
@@ -53,7 +53,5 @@ func (sh *ServerHandler) notePage(w http.ResponseWriter, r *http.Request) {
 		LastEdit: note.LastEdit,
 	}
 
-	pi := newPageInfo("orgpa - note", noteString, sh.Config)
-	t, _ := template.ParseFiles("./frontend/views/NotePage.html")
-	t.Execute(w, pi)
+	sh.TmplEngine.GenerateAndExecuteTemplate(w, "NotePage", "orgpa - note", noteString)
 }

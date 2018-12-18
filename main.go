@@ -12,9 +12,7 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	template := config.InitTemplate()
-
-	err = orgpa.Run(config, template)
+	err = orgpa.Run(config)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
