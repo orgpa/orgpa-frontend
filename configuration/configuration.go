@@ -11,6 +11,8 @@ import (
 	"html/template"
 	"os"
 	"strings"
+
+	"github.com/kelseyhightower/envconfig"
 )
 
 const (
@@ -20,21 +22,27 @@ const (
 	ViewFilePathDefault   = "./frontend/views/*.html"
 )
 
+// ExtractConfiguration will extract the configuration from
+// the environement and return a ServiceConfig struct containing
+// the whole service configuration.
+//
+// If an environment variable is missing a non nil error will be
+// returned.
+
 // ServiceConfig contains all the configuration of the service
 type ServiceConfig struct {
-	Endpoint       string `json:"endpoint"`
-	URLDatabaseAPI string `json:"urlDatabaseAPI"`
-	StaticFilePath string `json:"staticFilePath"`
-	ViewFilePath   string `json:"viewFilePath"`
+	Endpoint       string `required:"true"`
+	URLDatabaseAPI string `required:"true" envconfig:"URL_DATABASE_API"`
+	StaticFilePath string `required:"true" split_words:"true"`
+	ViewFilePath   string `required:"true" split_words:"true"`
 }
 
 // ExtractConfiguration return the configuration found in the given file.
 func ExtractConfiguration(filename string) (ServiceConfig, error) {
-	config := ServiceConfig{
-		EndpointDefault,
-		URLDatabaseAPIDefault,
-		StaticFilePathDefault,
-		ViewFilePathDefault,
+	var config ServiceConfig
+	err := envconfig.Process("orgpa", &config)
+	if err != nil {
+		return ServiceConfig{}, err
 	}
 
 	if strings.HasSuffix(config.StaticFilePath, "/") == false {
