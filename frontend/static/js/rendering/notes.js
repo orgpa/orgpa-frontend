@@ -3,7 +3,7 @@ class NotesRendering {
 	AllNotesHomePage(allNotes) {
 
 		// Display the AllNotes div if there is any notes to display
-		if (allNotes.length == 0) {
+		if (allNotes.success == "true") {
 			document.getElementById("AllNotes").style.display = "none";
 			return;
 		} else {

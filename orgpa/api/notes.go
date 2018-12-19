@@ -14,18 +14,18 @@ import (
 
 func (apiH *Handler) getAllNotes(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json;charset=utf8")
-	resp, err := http.Get(apiH.URLDatabaseAPI + "/list")
+	resp, err := http.Get(apiH.URLDatabaseAPI + "/notes")
 	if err != nil {
-		w.WriteHeader(400)
-		fmt.Fprintf(w, "{\"error\": %s}", err.Error())
+		w.WriteHeader(500)
+		fmt.Fprintf(w, `{"error": "%s"}`, err.Error())
 		return
 	}
-
 	defer resp.Body.Close()
+
 	responseBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		w.WriteHeader(400)
-		fmt.Fprintf(w, "{\"error\": %s}", err.Error())
+		w.WriteHeader(500)
+		fmt.Fprintf(w, `{"error": "%s"}`, err.Error())
 		return
 	}
 	fmt.Fprint(w, string(responseBody))
@@ -49,7 +49,7 @@ func (apiH *Handler) newNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp, err := http.Post(apiH.URLDatabaseAPI+"/list", "applicaition/json", bytes.NewBuffer(jsonData))
+	resp, err := http.Post(apiH.URLDatabaseAPI+"/notes", "applicaition/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		w.WriteHeader(400)
 		fmt.Fprintf(w, "{\"error\": \"%s\"}", err.Error())
@@ -75,7 +75,7 @@ func (apiH *Handler) deleteNote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	client := &http.Client{}
-	req, err := http.NewRequest("DELETE", apiH.URLDatabaseAPI+"/list/"+id, nil)
+	req, err := http.NewRequest("DELETE", apiH.URLDatabaseAPI+"/notes/"+id, nil)
 	if err != nil {
 		w.Header().Set("Content-Type", "application/json;charset=utf8")
 		w.WriteHeader(500)
@@ -113,7 +113,7 @@ func (apiH *Handler) patchNote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	client := &http.Client{}
-	req, err := http.NewRequest("PATCH", apiH.URLDatabaseAPI+"/list/"+id, bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("PATCH", apiH.URLDatabaseAPI+"/notes/"+id, bytes.NewBuffer(jsonData))
 	if err != nil {
 		w.Header().Set("Content-Type", "application/json;charset=utf8")
 		w.WriteHeader(500)
