@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"orgpa-frontend/orgpa/api"
+	"orgpa-frontend/orgpa/routes"
 	"time"
 
 	"orgpa-frontend/configuration"
@@ -15,15 +16,13 @@ import (
 // Run the frontend Orgpa server
 func Run(config configuration.ServiceConfig) error {
 	tmplEngine := template.NewTemplateEngine(config)
-	handler := newServerHandler(config, tmplEngine)
+	handler := routes.NewHandler(config, tmplEngine)
 	apiHandler := api.NewHandler(config)
 	r := mux.NewRouter()
 
-	handler.defineMainRoute(r)
-	handler.defineStaticRoute(r)
+	handler.DefineMainRoute(r)
+	handler.DefineStaticRoute(r)
 	apiHandler.DefineRoute(r)
-
-	log.Println("run")
 
 	srv := http.Server{
 		Addr:           config.Endpoint,
@@ -34,20 +33,7 @@ func Run(config configuration.ServiceConfig) error {
 		MaxHeaderBytes: 1 << 20,
 	}
 
+	log.Println("Server running on :", config.Endpoint)
+
 	return srv.ListenAndServe()
-}
-
-// Define the main routes of the server
-func (sh *ServerHandler) defineMainRoute(r *mux.Router) {
-	// Main route
-	r.Methods("GET").Path("/").HandlerFunc(sh.homePage)
-
-	// Notes route
-	notesSubrouter := r.PathPrefix("/note").Subrouter()
-	notesSubrouter.Methods("GET").Path("/{id}").HandlerFunc(sh.notePage)
-}
-
-// Define the route to server static files
-func (sh *ServerHandler) defineStaticRoute(r *mux.Router) {
-	r.Methods("GET").PathPrefix("/static/").HandlerFunc(sh.serveStatic)
 }

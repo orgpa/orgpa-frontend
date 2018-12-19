@@ -1,4 +1,4 @@
-package orgpa
+package routes
 
 import (
 	"io/ioutil"
@@ -7,7 +7,7 @@ import (
 )
 
 // Serve static filese
-func (sh *ServerHandler) serveStatic(w http.ResponseWriter, r *http.Request) {
+func (sh ServerHandler) serveStatic(w http.ResponseWriter, r *http.Request) {
 
 	path := r.URL.Path[len("/static/"):]
 

@@ -1,4 +1,4 @@
-package orgpa
+package routes
 
 import (
 	"encoding/json"
@@ -10,14 +10,14 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func (sh *ServerHandler) homePage(w http.ResponseWriter, r *http.Request) {
+func (sh ServerHandler) homePage(w http.ResponseWriter, r *http.Request) {
 	err := sh.TmplEngine.GenerateAndExecuteTemplate(w, "HomePage", "orgpa - home", "")
 	if err != nil {
 		log.Fatal(err.Error())
 	}
 }
 
-func (sh *ServerHandler) notePage(w http.ResponseWriter, r *http.Request) {
+func (sh ServerHandler) notePage(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	// Get ID from arguments
