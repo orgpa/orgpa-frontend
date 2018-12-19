@@ -1,7 +1,6 @@
 package configuration
 
 import (
-	"html/template"
 	"strings"
 
 	"github.com/kelseyhightower/envconfig"
@@ -11,8 +10,8 @@ import (
 type ServiceConfig struct {
 	Endpoint       string `required:"true"`
 	URLDatabaseAPI string `required:"true" envconfig:"URL_DATABASE_API"`
-	StaticFilePath string `required:"false" split_words:"true" default:"./frontend/static"`
-	ViewFilePath   string `required:"false" split_words:"true" default:"./frontend/views/*.html"`
+	StaticFilePath string `required:"false" split_words:"true" default:"./frontend/static/"`
+	ViewFilePath   string `required:"false" split_words:"true" default:"./frontend/views/"`
 }
 
 // ExtractConfiguration will extract the configuration from
@@ -28,12 +27,8 @@ func ExtractConfiguration(filename string) (ServiceConfig, error) {
 	if strings.HasSuffix(config.StaticFilePath, "/") == false {
 		config.StaticFilePath += "/"
 	}
+	if strings.HasSuffix(config.ViewFilePath, "/") == false {
+		config.ViewFilePath += "/"
+	}
 	return config, nil
-}
-
-// InitTemplate initialize the ServiceConfig's template.
-//
-// TODO: remove this function from here
-func (config *ServiceConfig) InitTemplate() *template.Template {
-	return template.Must(template.ParseGlob(config.ViewFilePath))
 }

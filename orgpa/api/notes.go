@@ -1,4 +1,4 @@
-package orgpa
+package api
 
 import (
 	"bytes"
@@ -12,12 +12,9 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Query all the notes to the databaseAPI
-// URL: /api/notes
-// Write the databaseAPI's answer on the ResponseWriter
-func (sh *ServerHandler) apiGetAllNotes(w http.ResponseWriter, r *http.Request) {
+func (apiH *Handler) getAllNotes(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json;charset=utf8")
-	resp, err := http.Get(sh.Config.URLDatabaseAPI + "/list")
+	resp, err := http.Get(apiH.URLDatabaseAPI + "/list")
 	if err != nil {
 		w.WriteHeader(400)
 		fmt.Fprintf(w, "{\"error\": %s}", err.Error())
@@ -34,7 +31,7 @@ func (sh *ServerHandler) apiGetAllNotes(w http.ResponseWriter, r *http.Request) 
 	fmt.Fprint(w, string(responseBody))
 }
 
-func (sh *ServerHandler) apiNewNote(w http.ResponseWriter, r *http.Request) {
+func (apiH *Handler) newNote(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json;charset=utf8")
 	title := r.FormValue("title")
 	content := r.FormValue("content")
@@ -52,7 +49,7 @@ func (sh *ServerHandler) apiNewNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resp, err := http.Post(sh.Config.URLDatabaseAPI+"/list", "applicaition/json", bytes.NewBuffer(jsonData))
+	resp, err := http.Post(apiH.URLDatabaseAPI+"/list", "applicaition/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		w.WriteHeader(400)
 		fmt.Fprintf(w, "{\"error\": \"%s\"}", err.Error())
@@ -66,7 +63,7 @@ func (sh *ServerHandler) apiNewNote(w http.ResponseWriter, r *http.Request) {
 	w.Write(body)
 }
 
-func (sh *ServerHandler) apiDeleteNote(w http.ResponseWriter, r *http.Request) {
+func (apiH *Handler) deleteNote(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain;charset=utf8")
 	vars := mux.Vars(r)
 	id, ok := vars["id"]
@@ -78,7 +75,7 @@ func (sh *ServerHandler) apiDeleteNote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	client := &http.Client{}
-	req, err := http.NewRequest("DELETE", sh.Config.URLDatabaseAPI+"/list/"+id, nil)
+	req, err := http.NewRequest("DELETE", apiH.URLDatabaseAPI+"/list/"+id, nil)
 	if err != nil {
 		w.Header().Set("Content-Type", "application/json;charset=utf8")
 		w.WriteHeader(500)
@@ -95,7 +92,7 @@ func (sh *ServerHandler) apiDeleteNote(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func (sh *ServerHandler) apiPatchNote(w http.ResponseWriter, r *http.Request) {
+func (apiH *Handler) patchNote(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain;charset=utf8")
 	id := r.FormValue("id")
 	content := r.FormValue("content")
@@ -116,7 +113,7 @@ func (sh *ServerHandler) apiPatchNote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	client := &http.Client{}
-	req, err := http.NewRequest("PATCH", sh.Config.URLDatabaseAPI+"/list/"+id, bytes.NewBuffer(jsonData))
+	req, err := http.NewRequest("PATCH", apiH.URLDatabaseAPI+"/list/"+id, bytes.NewBuffer(jsonData))
 	if err != nil {
 		w.Header().Set("Content-Type", "application/json;charset=utf8")
 		w.WriteHeader(500)
