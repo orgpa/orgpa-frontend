@@ -11,6 +11,7 @@ type TemplateEngine struct {
 	ViewsPath  string
 	HeaderPath string
 	FooterPath string
+	HeadPath   string
 	Config     configuration.ServiceConfig
 }
 
@@ -21,13 +22,14 @@ func NewTemplateEngine(config configuration.ServiceConfig) TemplateEngine {
 		ViewsPath:  config.ViewFilePath,
 		HeaderPath: config.ViewFilePath + "utils/Header.html",
 		FooterPath: config.ViewFilePath + "utils/Footer.html",
+		HeadPath:   config.ViewFilePath + "utils/Head.html",
 		Config:     config,
 	}
 }
 
 // GenerateTemplate return a whole template corresponding on given viewName.
 func (tmplEng TemplateEngine) GenerateTemplate(viewName string) (*template.Template, error) {
-	tmpl, err := template.ParseFiles(tmplEng.ViewsPath+viewName+".html", tmplEng.HeaderPath, tmplEng.FooterPath)
+	tmpl, err := template.ParseFiles(tmplEng.ViewsPath+viewName+".html", tmplEng.HeaderPath, tmplEng.FooterPath, tmplEng.HeadPath)
 	if err != nil {
 		return nil, err
 	}
