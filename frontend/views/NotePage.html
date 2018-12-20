@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>{{.Title}}</title>
+	<title>{{.PageName}}</title>
 
 	<!-- Favicon -->
 	<link rel="icon" href="/static/img/logo-nci.jpg">
@@ -38,17 +38,17 @@
 	<div class="container">
 		<div class="card z-depth-3" style="margin-top: 40px;">
 			<div class="card-content">
-				<h1 class="section-title" style="margin:0px;">{{.Data.Title}}</h1>
+				<h1 class="section-title" style="margin:0px;">{{.Data.data.title}}</h1>
 			</div>
 		</div>
 		<div class="card z-depth-3">
 			<div class="card-content">
 				<div class="input-field">
-					<textarea id="modified-note-content" class="materialize-textarea" onkeyup="ShowValidateButton('{{.Data.Content}}', this.value, 'btn-valid-content')">{{.Data.Content}}</textarea>
+					<textarea id="modified-note-content" class="materialize-textarea" onkeyup="ShowValidateButton('{{.Data.Content}}', this.value, 'btn-valid-content')">{{.Data.data.content}}</textarea>
 				</div>
 				<div class="row">
-					<button id="btn-valid-content" class="btn red" style="display:none;margin-bottom: 10px;" onclick="databaseAPI.ModifyNote('{{.Data.ID}}', 'modified-note-content')">modify</button>
-					<button id="btn-delete-note" class="btn red" onclick="databaseAPI.DeleteNote('{{.Data.ID}}', '/')">delete</button>
+					<button id="btn-valid-content" class="btn red" style="display:none;margin-bottom: 10px;" onclick="databaseAPI.ModifyNote('{{.Data.data.id}}', 'modified-note-content')">modify</button>
+					<button id="btn-delete-note" class="btn red" onclick="databaseAPI.DeleteNote('{{.Data.data.id}}', '/')">delete</button>
 				</div>
 			</div>
 		</div>
