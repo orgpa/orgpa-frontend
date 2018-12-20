@@ -2,18 +2,18 @@ package routes
 
 import (
 	"encoding/json"
+	"io/ioutil"
 	"log"
 	"net/http"
-	"orgpa-frontend/database"
-	"strconv"
 
 	"github.com/gorilla/mux"
 )
 
 func (sh ServerHandler) homePage(w http.ResponseWriter, r *http.Request) {
 	err := sh.TmplEngine.GenerateAndExecuteTemplate(w, "HomePage", "orgpa - home", "")
+	// debug
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Println(err.Error())
 	}
 }
 
@@ -28,30 +28,34 @@ func (sh ServerHandler) notePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Request database API
-	resp, err := http.Get(sh.Config.URLDatabaseAPI + "/list/" + varID)
+	resp, err := http.Get(sh.Config.URLDatabaseAPI + "/notes/" + varID)
 	if err != nil {
 		log.Println(err.Error())
 		http.Redirect(w, r, "/", 400)
 		return
 	}
 
-	// Decode JSON from response's body
-	var note database.Notes
-	err = json.NewDecoder(resp.Body).Decode(&note)
+	// Get JSON from response's body
+	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Println(err.Error())
 		http.Redirect(w, r, "/", 400)
 		return
 	}
 
-	// Create a renderable Note structure from the previous
-	// requested note struct.
-	var noteString = database.NotesString{
-		ID:       strconv.Itoa(note.ID),
-		Content:  note.Content,
-		Title:    note.Title,
-		LastEdit: note.LastEdit,
+	// Decode JSON
+	var f interface{}
+	err = json.Unmarshal(body, &f)
+	if err != nil {
+		log.Println(err.Error())
+		http.Redirect(w, r, "/", 400)
+		return
 	}
+	itemsMap := f.(map[string]interface{})
 
-	sh.TmplEngine.GenerateAndExecuteTemplate(w, "NotePage", "orgpa - note", noteString)
+	err = sh.TmplEngine.GenerateAndExecuteTemplate(w, "NotePage", "orgpa - note", itemsMap)
+	// debug
+	if err != nil {
+		log.Println(err.Error())
+	}
 }

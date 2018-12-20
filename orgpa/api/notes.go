@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"orgpa-frontend/database"
-	"time"
 
 	"github.com/gorilla/mux"
 )
@@ -33,32 +32,37 @@ func (apiH *Handler) getAllNotes(w http.ResponseWriter, r *http.Request) {
 
 func (apiH *Handler) newNote(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json;charset=utf8")
+	// Get title and content value
 	title := r.FormValue("title")
 	content := r.FormValue("content")
 	if title == "" || content == "" {
 		w.WriteHeader(400)
-		fmt.Fprintf(w, "{\"error\": \"missing information\"}")
+		fmt.Fprintf(w, `{"error": "missing information"}`)
 		return
 	}
 
-	note := database.Notes{ID: 0, Title: title, Content: content, LastEdit: time.Now().UTC()}
+	// Create the new note and tramsform in JSON
+	note := database.Notes{Title: title, Content: content}
 	jsonData, err := json.Marshal(note)
 	if err != nil {
 		w.WriteHeader(400)
-		fmt.Fprintf(w, "{\"error\": \"'%s\"}", err.Error())
+		fmt.Fprintf(w, `{"error": "%s"}`, err.Error())
 		return
 	}
 
+	// Send the new note to the database API
 	resp, err := http.Post(apiH.URLDatabaseAPI+"/notes", "applicaition/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		w.WriteHeader(400)
-		fmt.Fprintf(w, "{\"error\": \"%s\"}", err.Error())
+		fmt.Fprintf(w, `{"error": "%s"}`, err.Error())
 	}
+
+	// Return the new note in JSON
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		w.WriteHeader(400)
-		fmt.Fprintf(w, "{\"error\": \"%s\"}", err.Error())
+		fmt.Fprintf(w, `{"error": "%s"}`, err.Error())
 	}
 	w.Write(body)
 }
@@ -70,7 +74,7 @@ func (apiH *Handler) deleteNote(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		w.Header().Set("Content-Type", "application/json;charset=utf8")
 		w.WriteHeader(400)
-		fmt.Fprintf(w, "{\"error\": \"missing information\"}")
+		fmt.Fprintf(w, `{"error": "missing information"}`)
 		return
 	}
 
@@ -79,53 +83,71 @@ func (apiH *Handler) deleteNote(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.Header().Set("Content-Type", "application/json;charset=utf8")
 		w.WriteHeader(500)
-		fmt.Fprintf(w, "{\"error\": \"%s\"}", err.Error())
+		fmt.Fprintf(w, `{"error": "%s"}`, err.Error())
 		return
 	}
 
-	_, err = client.Do(req)
+	resp, err := client.Do(req)
 	if err != nil {
 		w.Header().Set("Content-Type", "application/json;charset=utf8")
 		w.WriteHeader(400)
-		fmt.Fprintf(w, "{\"error\": \"%s\"}", err.Error())
+		fmt.Fprintf(w, `{"error": "%s"}`, err.Error())
 		return
 	}
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		w.WriteHeader(400)
+		fmt.Fprintf(w, `{"error": "%s"}`, err.Error())
+	}
+	w.Write(body)
 }
 
 func (apiH *Handler) patchNote(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/plain;charset=utf8")
+	w.Header().Set("Content-Type", "application/json;charset=utf8")
+
+	// Get the note's ID and content
 	id := r.FormValue("id")
 	content := r.FormValue("content")
 	if id == "" || content == "" {
-		w.Header().Set("Content-Type", "application/json;charset=utf8")
 		w.WriteHeader(400)
-		fmt.Fprintf(w, "{\"error\": \"missing information\"}")
+		fmt.Fprintf(w, `{"error": "missing information"}`)
 		return
 	}
 
+	// Create a JSON of the note
 	note := database.Notes{Content: content}
 	jsonData, err := json.Marshal(note)
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json;charset=utf8")
 		w.WriteHeader(400)
-		fmt.Fprintf(w, "{\"error\": \"'%s\"}", err.Error())
+		fmt.Fprintf(w, `{"error": "%s"}`, err.Error())
 		return
 	}
 
+	// Create the request
 	client := &http.Client{}
 	req, err := http.NewRequest("PATCH", apiH.URLDatabaseAPI+"/notes/"+id, bytes.NewBuffer(jsonData))
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json;charset=utf8")
 		w.WriteHeader(500)
-		fmt.Fprintf(w, "{\"error\": \"%s\"}", err.Error())
+		fmt.Fprintf(w, `{"error": "%s"}`, err.Error())
 		return
 	}
 
-	_, err = client.Do(req)
+	// Send request
+	resp, err := client.Do(req)
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json;charset=utf8")
 		w.WriteHeader(400)
-		fmt.Fprintf(w, "{\"error\": \"%s\"}", err.Error())
+		fmt.Fprintf(w, `{"error": "%s"}`, err.Error())
 		return
 	}
+
+	// Return the patched note in JSON
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		w.WriteHeader(400)
+		fmt.Fprintf(w, `{"error": "%s"}`, err.Error())
+	}
+	w.Write(body)
 }

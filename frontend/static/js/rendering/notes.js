@@ -3,7 +3,8 @@ class NotesRendering {
 	AllNotesHomePage(allNotes) {
 
 		// Display the AllNotes div if there is any notes to display
-		if (allNotes.success == "true") {
+		if (allNotes.success == "false") {
+			// TODO : handle error and display a pop up 
 			document.getElementById("AllNotes").style.display = "none";
 			return;
 		} else {
@@ -16,11 +17,11 @@ class NotesRendering {
 			return;
 
 		// Table's body
-		for (var i = 0; i < allNotes.length; i++) {
+		for (var i = 0; i < allNotes.data.length; i++) {
 			html += "<tr>";
-			html += "<td>" + allNotes[i].Title + "</td>";
-			html += "<td>" + allNotes[i].Content + "</td>";
-			html += "<td>" + "<a href='/note/"+ allNotes[i].ID +"'><button class='btn red'>see</button></a>" + "</td>";
+			html += "<td>" + allNotes.data[i].title + "</td>";
+			html += "<td>" + allNotes.data[i].content + "</td>";
+			html += "<td>" + "<a href='/note/"+ allNotes.data[i].id +"'><button class='btn red'>see</button></a>" + "</td>";
 			html += "</tr>";
 		}
 
