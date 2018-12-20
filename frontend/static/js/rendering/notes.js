@@ -7,6 +7,9 @@ class NotesRendering {
 			// TODO : handle error and display a pop up 
 			document.getElementById("AllNotes").style.display = "none";
 			return;
+		} else if (allNotes.number_of_record == 0) {
+			console.log("no data to show");
+			return;
 		} else {
 			document.getElementById("AllNotes").style.display = "block";
 		}

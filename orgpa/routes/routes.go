@@ -10,11 +10,8 @@ import (
 )
 
 func (sh ServerHandler) homePage(w http.ResponseWriter, r *http.Request) {
-	err := sh.TmplEngine.GenerateAndExecuteTemplate(w, "HomePage", "orgpa - home", "")
-	// debug
-	if err != nil {
-		log.Println(err.Error())
-	}
+	sh.TmplEngine.GenerateAndExecuteTemplate(w, "HomePage", "orgpa - home", "")
+	// Handle error
 }
 
 func (sh ServerHandler) notePage(w http.ResponseWriter, r *http.Request) {
@@ -53,9 +50,6 @@ func (sh ServerHandler) notePage(w http.ResponseWriter, r *http.Request) {
 	}
 	itemsMap := f.(map[string]interface{})
 
-	err = sh.TmplEngine.GenerateAndExecuteTemplate(w, "NotePage", "orgpa - note", itemsMap)
-	// debug
-	if err != nil {
-		log.Println(err.Error())
-	}
+	sh.TmplEngine.GenerateAndExecuteTemplate(w, "NotePage", "orgpa - note", itemsMap)
+	// Handle error
 }
