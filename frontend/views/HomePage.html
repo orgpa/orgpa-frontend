@@ -1,39 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>{{.PageName}}</title>
-
-	<!-- Favicon -->
-	<link rel="icon" href="/static/img/logo-nci.jpg">
-
-	<!-- CSS -->
-	<link rel="stylesheet" href="/static/css/main.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
-	<!-- Scripts -->
-	<script src="/static/js/database.js"></script>
-	<script src="/static/js/form.js"></script>
-	<script src="/static/js/rendering/notes.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-</head>
+{{template "head" .}}
 <body>
+	{{template "header" .}}
+	<script src="/static/js/rendering/notes.js"></script>
 	<script>
 		var databaseAPI = new DatabaseAPI('{{.Config.URLDatabaseAPI}}')
 		var notesRenderer = new NotesRendering
 	</script>
-
-	<nav class="nav-wrapper">
-		<div class="container">
-			<a href="/" class="brand-logo">orgpa</a>
-			<ul id="nav-mobile" class="right hide-on-med-and-down">
-				<li><a href="#">titi</a></li>
-				<li><a href="#">tata</a></li>
-				<li><a href="#">toto</a></li>
-			</ul>
-		</div>
-	</nav>
 
 	<div class="container">
 		<div id="AllNotes">
@@ -77,5 +49,6 @@
 			</div>
 		</div>
 	</div>
+	{{template "footer" .}}
 </body>
 </html>
