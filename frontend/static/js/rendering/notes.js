@@ -22,9 +22,8 @@ class NotesRendering {
 		// Table's body
 		for (var i = 0; i < allNotes.data.length; i++) {
 			html += "<tr>";
-			html += "<td>" + allNotes.data[i].title + "</td>";
-			html += "<td>" + allNotes.data[i].content + "</td>";
-			html += "<td>" + "<a href='/note/"+ allNotes.data[i].id +"'><button class='btn red'>see</button></a>" + "</td>";
+			html += "<td><h6 style='margin:0px;'>" + allNotes.data[i].title + "</h6></td>";
+			html += "<td>" + "<a href='/note/"+ allNotes.data[i].id +"'><button class='btn red' style='padding-left: 25px;padding-right: 25px;'>see</button></a>" + "</td>";
 			html += "</tr>";
 		}
 

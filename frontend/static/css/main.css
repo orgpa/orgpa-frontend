@@ -6,6 +6,10 @@ th, td {
 	text-align: center !important;
 }
 
+.link {
+	color: #f44336 !important;
+}
+
 .section-title {
 	font: 600 2em/1 'Raleway', sans-serif;
 	color: rgba(0,0,0,.8);
