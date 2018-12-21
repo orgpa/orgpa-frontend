@@ -11,4 +11,7 @@ func (apiH *Handler) DefineRoute(r *mux.Router) {
 	apiSubrouter.Methods("POST").Path("/notes").HandlerFunc(apiH.newNote)
 	apiSubrouter.Methods("PATCH").Path("/notes").HandlerFunc(apiH.patchNote)
 	apiSubrouter.Methods("DELETE").Path("/notes/{id}").HandlerFunc(apiH.deleteNote)
+
+	// API todos URL
+	apiSubrouter.Methods("GET").Path("/todos").HandlerFunc(apiH.getAllTodos)
 }
