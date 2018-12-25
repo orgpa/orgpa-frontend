@@ -43,10 +43,16 @@ func (apiH *Handler) newTodo(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Parse time
+	timeDueDate, err := time.Parse(time.RFC3339, dueDate)
+	if err != nil {
+		w.WriteHeader(400)
+		fmt.Fprintf(w, `{"error": "%s"}`, err.Error())
+		return
+	}
+
 	// Create the new note and tramsform in JSON
-	timeDueDate, err := time.Parse(dueDate, time.RFC3339)
 	todo := database.Todo{Title: title, Content: content, DueDate: &timeDueDate}
-	fmt.Println(todo)
 	jsonData, err := json.Marshal(todo)
 	if err != nil {
 		w.WriteHeader(400)
@@ -123,7 +129,7 @@ func (apiH *Handler) patchTodo(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Parse time
-	dueDateTime, err := time.Parse(dueDate, time.RFC3339)
+	dueDateTime, err := time.Parse(time.RFC3339, dueDate)
 	if err != nil {
 		w.WriteHeader(400)
 		fmt.Println(w, `{"error": "%s"}`, err.Error())
