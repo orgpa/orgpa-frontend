@@ -1,6 +1,6 @@
 class NotesRendering {
 
-	AllNotesHomePage(allNotes) {
+	AllHomePage(allNotes) {
 
 		// Display the AllNotes div if there is any notes to display
 		if (allNotes.success == "false") {

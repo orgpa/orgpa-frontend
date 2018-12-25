@@ -2,6 +2,7 @@ package api
 
 import "github.com/gorilla/mux"
 
+// DefineRoute defines all the route for the service's API
 func (apiH *Handler) DefineRoute(r *mux.Router) {
 	// base url for API
 	apiSubrouter := r.PathPrefix("/api").Subrouter()

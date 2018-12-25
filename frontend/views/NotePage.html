@@ -1,7 +1,10 @@
 {{template "head" .}}
 <body>
 	{{template "header" .}}
+	<!-- Additional scritps here -->
 	<script src="/static/rendering/notes.js"></script>
+	<script src="/static/js/api/notes.js"></script>
+
 	<script>
 		var databaseAPI = new DatabaseAPI('{{.Config.URLDatabaseAPI}}')
 		var notesRenderer = new NotesRendering
@@ -19,8 +22,8 @@
 					<textarea id="modified-note-content" class="materialize-textarea" onkeyup="ShowValidateButton('{{.Data.Content}}', this.value, 'btn-valid-content')">{{.Data.data.content}}</textarea>
 				</div>
 				<div class="row">
-					<button id="btn-valid-content" class="btn red" style="display:none;margin-bottom: 10px;" onclick="databaseAPI.ModifyNote('{{.Data.data.id}}', 'modified-note-content')">modify</button>
-					<button id="btn-delete-note" class="btn red" onclick="databaseAPI.DeleteNote('{{.Data.data.id}}', '/')">delete</button>
+					<button id="btn-valid-content" class="btn red" style="display:none;margin-bottom: 10px;" onclick="NoteAPI.Modify('{{.Data.data.id}}', 'modified-note-content')">modify</button>
+					<button id="btn-delete-note" class="btn red" onclick="NoteAPI.Delete('{{.Data.data.id}}', '/')">delete</button>
 				</div>
 			</div>
 		</div>

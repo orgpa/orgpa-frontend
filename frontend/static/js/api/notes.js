@@ -1,10 +1,10 @@
-class DatabaseAPI {
+class NoteAPI {
 
 	constructor(url) {
 		this.url = url
 	}
 
-	RequestAllNotes(callback) {
+	RequestAll(callback) {
 		$.ajax({
 			method: "GET",
 			url: "/api/notes",
@@ -18,7 +18,7 @@ class DatabaseAPI {
 		});
 	}
 
-	NewNote(idTitle, idContent) {
+	New(idTitle, idContent) {
 		var titleInput = document.getElementById(idTitle)
 		var contentInput = document.getElementById(idContent)
 		if (!titleInput || !contentInput) {
@@ -51,7 +51,7 @@ class DatabaseAPI {
 		})
 	}
 
-	DeleteNote(idNote, redirectURL) {
+	Delete(idNote, redirectURL) {
 		$.ajax({
 			method: "DELETE",
 			url: "/api/notes/"+idNote,
@@ -66,7 +66,7 @@ class DatabaseAPI {
 		})
 	}
 
-	ModifyNote(idNote, idModifiedContent) {
+	Modify(idNote, idModifiedContent) {
 		var content = document.getElementById(idModifiedContent)
 		if (!content)
 			return false

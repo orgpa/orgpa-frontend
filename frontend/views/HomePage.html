@@ -1,9 +1,13 @@
 {{template "head" .}}
 <body>
 	{{template "header" .}}
+	<!-- Additional scritps here -->
 	<script src="/static/js/rendering/notes.js"></script>
+	<script src="/static/js/api/notes.js"></script>
+	<script src="/static/js/api/todos.js"></script>
+
 	<script>
-		var databaseAPI = new DatabaseAPI('{{.Config.URLDatabaseAPI}}')
+		var databaseAPI = new NoteAPI('{{.Config.URLDatabaseAPI}}')
 		var notesRenderer = new NotesRendering
 	</script>
 
@@ -21,12 +25,9 @@
 					<div class="card">
 						<div class="card-content">
 							<table class="striped">
-								<thead>
-									<!-- <th><h5 style="margin:0px;">Title</h5></th> -->
-								</thead>
 								<tbody id="AllNotesTableBody">
 									<script>
-										databaseAPI.RequestAllNotes(notesRenderer.AllNotesHomePage);
+										databaseAPI.RequestAll(notesRenderer.AllHomePage);
 									</script>
 								</tbody>
 							</table>
@@ -46,10 +47,6 @@
 					<div class="card">
 						<div class="card-content">
 							<table class="striped">
-								<thead>
-									<th><h5 style="margin:0px;">Title</h5></th>
-									<th><h5 style="margin:0px;">Content</h5></th>
-								</thead>
 								<tbody id="AllTodosTableBody">
 									<!-- <script>
 										databaseAPI.RequestAllTodos(todosRenderer.AllTodosHomePage);
