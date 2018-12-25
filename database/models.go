@@ -4,18 +4,21 @@ import (
 	"time"
 )
 
-// Notes model
-type Notes struct {
-	ID       int       `json:"ID"`
-	Title    string    `json:"Title"`
-	Content  string    `json:"Content"`
-	LastEdit time.Time `json:"LastEdit"`
+// Note represent one row of the "notes" table in the database
+type Note struct {
+	ID        int        `json:"id"`
+	Title     string     `json:"title"`
+	Content   string     `json:"content"`
+	LastEdit  *time.Time `json:"last_edit"`
+	CreatedAt *time.Time `json:"created_at"`
 }
 
-// NotesString copy of the note model with the ID in string (for rendering purpose)
-type NotesString struct {
-	ID       string    `json:"ID"`
-	Title    string    `json:"Title"`
-	Content  string    `json:"Content"`
-	LastEdit time.Time `json:"LastEdit"`
+// Todo represent one row of the "todos" table in the database.
+type Todo struct {
+	ID        int        `json:"id"`
+	Title     string     `json:"title"`
+	Content   string     `json:"content"`
+	DueDate   *time.Time `json:"due_date"`
+	LastEdit  *time.Time `json:"last_edit"`
+	CreatedAt *time.Time `json:"created_at"`
 }

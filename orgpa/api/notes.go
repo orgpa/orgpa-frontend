@@ -42,7 +42,7 @@ func (apiH *Handler) newNote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create the new note and tramsform in JSON
-	note := database.Notes{Title: title, Content: content}
+	note := database.Note{Title: title, Content: content}
 	jsonData, err := json.Marshal(note)
 	if err != nil {
 		w.WriteHeader(400)
@@ -117,7 +117,7 @@ func (apiH *Handler) patchNote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Create a JSON of the note
-	note := database.Notes{Content: content}
+	note := database.Note{Content: content}
 	jsonData, err := json.Marshal(note)
 	if err != nil {
 		w.WriteHeader(400)
